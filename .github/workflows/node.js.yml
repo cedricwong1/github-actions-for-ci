@@ -17,3 +17,12 @@ jobs:
       with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
+    - name: test-script    
+      uses: actions/github-script@v5
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        script: return "Hello!"
+        result-encoding: string
+    - name: Get Result
+      run: "${{steps.set-result.outputs.result}}"
+        
