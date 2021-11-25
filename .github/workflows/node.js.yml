@@ -20,9 +20,9 @@ jobs:
     - name: test-script    
       uses: actions/github-script@v5
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: return "Hello!"
         result-encoding: string
     - name: Get Result
-      run: "${{steps.set-result.outputs.result}}"
+      run: "${{steps.test-script.outputs.result}}"
         
