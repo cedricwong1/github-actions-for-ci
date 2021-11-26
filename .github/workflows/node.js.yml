@@ -18,9 +18,12 @@ jobs:
           name: webpack artifacts
           path: public/
       - name: next_tag
+        if: github.repository == "cedricwong1/github-actions-for-ci"
         run: |
           echo "::set-output name=next_tag::$( git tag --sort=creatordate | tail -1 | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')"
         id: next_tag_info
-      - uses: actions-ecosystem/action-push-tag@v1
+      - name: push_new_tag
+        if: github.repository == "cedricwong1/github-actions-for-ci"
+        uses: actions-ecosystem/action-push-tag@v1
         with:
           tag: ${{ steps.next_tag_info.outputs.next_tag }}
