@@ -17,13 +17,25 @@ jobs:
         with:
           name: webpack artifacts
           path: public/
-      - name: next_tag
-        run: |
-          echo "::set-output name=next_tag::$( git describe --tags --abbrev=0 | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')"
-        id: next_tag_info
+      #- name: next_tag
+      #  run: |
+      #    echo "::set-output name=next_tag::$( git describe --tags --abbrev=0 | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')"
+      #  id: next_tag_info
+      #- uses: actions-ecosystem/action-push-tag@v1
+      #  with:
+      #    tag: ${{ steps.next_tag_info.outputs.next_tag }}
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+
+      - uses: actions-ecosystem/action-bump-semver@v1
+        id: bump-semver
+        with:
+          current_version: ${{ steps.get-latest-tag.outputs.tag }}
+          level: minor
+
       - uses: actions-ecosystem/action-push-tag@v1
         with:
-          tag: ${{ steps.next_tag_info.outputs.next_tag }}
+          tag: ${{ steps.bump-semver.outputs.new_version }}
           
   test:
     needs: build
