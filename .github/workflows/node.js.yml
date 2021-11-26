@@ -21,6 +21,10 @@ jobs:
         run: |
           echo "::set-output name=next_tag::$( git describe --tags --abbrev=0 --always | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')"
         id: next_tag_info
+      - name: next_tag_123
+        run: |
+          echo "$( git describe --tags --abbrev=0 --always | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')"
+        id: next_tag_123        
       - uses: actions-ecosystem/action-push-tag@v1
         with:
           tag: ${{ steps.next_tag_info.outputs.next_tag }}
