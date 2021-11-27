@@ -2,7 +2,19 @@ name: Auto approve
 on: pull_request_target
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: npm install and build webpack
+        run: |
+          npm install
+          npm run build
+          
   check_condition:
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Wait for build to succeed
@@ -16,7 +28,7 @@ jobs:
       with:
         github-token: "${{ secrets.GITHUB_TOKEN }}"
   automerge:
-    needs: build
+    needs: check_condition
     runs-on: ubuntu-latest
     steps:
     - name: Merge pull requests (automerge-action)
