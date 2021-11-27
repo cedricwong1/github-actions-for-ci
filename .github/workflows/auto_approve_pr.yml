@@ -2,7 +2,7 @@ name: Auto approve
 on: pull_request_target
 
 jobs:
-  build:
+  build123:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,7 +14,7 @@ jobs:
           npm run build
           
   check_condition:
-    needs: build
+    needs: build123
     runs-on: ubuntu-latest
     steps:
     - name: Wait for build to succeed
@@ -22,7 +22,7 @@ jobs:
       id: wait-for-build
       with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: build
+          checkName: build123
     - uses: hmarr/auto-approve-action@v2
       if: steps.wait-for-build.outputs.conclusion == 'success'
       with:
