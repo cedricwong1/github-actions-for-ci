@@ -2,7 +2,7 @@ name: Auto approve
 on: pull_request_target
 
 jobs:
-  build:
+  check_condition:
     runs-on: ubuntu-latest
     steps:
     - name: Wait for build to succeed
