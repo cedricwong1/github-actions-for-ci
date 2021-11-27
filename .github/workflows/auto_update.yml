@@ -1,0 +1,14 @@
+name: auto update
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '*/5 * * * *'
+    
+jobs:
+  autoupdate:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: chinthakagodawita/autoupdate@v1.5.0
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
