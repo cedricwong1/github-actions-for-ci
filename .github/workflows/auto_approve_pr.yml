@@ -2,16 +2,7 @@ name: Auto approve
 on: pull_request_target
 
 jobs:
-  autoupdate:
-    name: autoupdate
-    runs-on: ubuntu-latest
-    steps:
-      - name: Auto Update
-        uses: chinthakagodawita/autoupdate@v1.5.0
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
   build123:
-    needs: autoupdate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
