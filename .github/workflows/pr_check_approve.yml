@@ -1,0 +1,20 @@
+name: Auto Check Approver
+on: pull_request_target
+
+jobs:
+
+  check_condition:
+    needs: build123
+    runs-on: ubuntu-latest
+    steps:
+    - name: Wait for build to succeed
+      uses: fountainhead/action-wait-for-check@v1.0.0
+      id: wait-for-build
+      with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: build123
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+    - uses: hmarr/auto-approve-action@v2
+      if: steps.wait-for-build.outputs.conclusion == 'success'
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
