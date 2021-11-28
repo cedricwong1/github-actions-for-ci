@@ -28,7 +28,7 @@ jobs:
     - uses: hmarr/auto-approve-action@v2
       if: steps.wait-for-build.outputs.conclusion == 'success'
       with:
-        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        github-token: "${{ secrets.DEVOPS_TOEKN }}"
   automerge:
     needs: check_condition
     runs-on: ubuntu-latest
