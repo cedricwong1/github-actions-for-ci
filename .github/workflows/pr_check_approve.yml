@@ -1,21 +1,9 @@
-name: Auto approve
-on: pull_request
+name: Auto Check Approver Merger
+on: pull_request_target
 
 jobs:
-          
-  build123:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: npm install and build webpack
-        run: |
-          npm install
-          npm run build
-          
+
   check_condition:
-    needs: build123
     runs-on: ubuntu-latest
     steps:
     - name: Wait for build to succeed
@@ -28,7 +16,7 @@ jobs:
     - uses: hmarr/auto-approve-action@v2
       if: steps.wait-for-build.outputs.conclusion == 'success'
       with:
-        github-token: "${{ secrets.DEVOPS_TOEKN }}"
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
   automerge:
     needs: check_condition
     runs-on: ubuntu-latest
@@ -36,5 +24,5 @@ jobs:
     - name: Merge pull requests (automerge-action)
       uses: pascalgn/automerge-action@v0.14.3
       env:
-          GITHUB_TOKEN: "${{ secrets.DEVOPS_TOEKN }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           #LOG: "TRACE"  # or "DEBUG"
