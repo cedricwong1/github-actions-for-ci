@@ -42,7 +42,9 @@ jobs:
     - name: check_merge_status
       if: github.repository == 'cedricwong1/github-actions-for-ci'
       run: |
-          echo "::set-output name=merge_status::$([[ $(git rev-parse HEAD) == $(git rev-list -n 1 $(git tag --sort=creatordate | tail -1)) ]] && echo "true" || echo "false")"
+          echo "::set-output name=merge_status::$([[ $(git rev-parse HEAD) == $(git rev-list -n 1 $(git tag --sort=creatordate | tail -1)) ]] && echo "false" || echo "true")"
+          echo $(git rev-parse HEAD)
+          echo $(git rev-list -n 1 $(git tag --sort=creatordate | tail -1))
       id: check_merge_status
     - name: push_new_tag
       if: (github.repository == 'cedricwong1/github-actions-for-ci' && steps.check_merge_status.outputs.merge_status=='true' )
