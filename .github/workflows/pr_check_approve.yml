@@ -26,3 +26,20 @@ jobs:
       env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           #LOG: "TRACE"  # or "DEBUG"
+  dispatch:
+    needs: automerge
+    runs-on: ubuntu-latest
+    steps:
+    - name: Wait for merge to succeed
+      uses: fountainhead/action-wait-for-check@v1.0.0
+      id: wait-for-merge
+      with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: automerge
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+    - name: Invoke workflow without inputs
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+          workflow: Node CI
+          token: ${{ secrets.DEVOPS_TOKEN }}
+
