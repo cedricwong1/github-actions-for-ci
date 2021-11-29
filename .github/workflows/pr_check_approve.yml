@@ -26,3 +26,13 @@ jobs:
       env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           #LOG: "TRACE"  # or "DEBUG"
+  dispatch:
+    needs: automerge
+    runs-on: ubuntu-latest
+    steps:
+    - name: Invoke workflow without inputs
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+          workflow: Node CI
+          token: ${{ secrets.DEVOPS_TOKEN }}
+
