@@ -26,5 +26,26 @@ jobs:
       env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           #LOG: "TRACE"  # or "DEBUG"
-
-
+          
+  createTag:
+    needs: automerge
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+    - name: next_tag
+      if: github.repository == 'cedricwong1/github-actions-for-ci'
+      run: |
+          echo "::set-output name=next_tag::$( git tag --sort=creatordate | tail -1 | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')"
+      id: next_tag_info   
+    - name: check_merge_status
+      if: github.repository == 'cedricwong1/github-actions-for-ci'
+      run: |
+          echo "::set-output name=merge_status::$([[ $(git rev-parse HEAD) == $(git rev-list -n 1 $(git tag --sort=creatordate | tail -1)) ]] && echo "true" || echo "false")"
+      id: check_merge_status
+    - name: push_new_tag
+      if: (github.repository == 'cedricwong1/github-actions-for-ci' && ${{ steps.check_merge_status.outputs.merge_status}} )
+      uses: actions-ecosystem/action-push-tag@v1
+      with:
+          tag: ${{ steps.next_tag_info.outputs.next_tag }}
