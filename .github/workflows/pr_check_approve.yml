@@ -43,6 +43,7 @@ jobs:
       with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+    - run: git checkout HEAD^
     - name: next_tag
       if: github.repository == 'cedricwong1/github-actions-for-ci'
       run: |
