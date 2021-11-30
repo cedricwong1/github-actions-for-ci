@@ -31,13 +31,13 @@ jobs:
     needs: automerge
     runs-on: ubuntu-latest
     env:
-      GIT_PR_SHA: ${{github.event.pull_request.head.sha}}
-      GIT_PR_BASE: ${{github.base_ref}}
-      GIT_PR_REF: ${{github.ref}}
-      GIT_PR_REFNAME: ${{github.ref_name}}
-      GIT_PR_REFTYPE: ${{github.ref_type}}
-      GIT_SHA: ${{github.sha}}
-      GIT_TOKEN: ${{github.token}}
+      #GIT_PR_SHA: ${{github.event.pull_request.head.sha}}
+      #GIT_PR_BASE: ${{github.base_ref}}
+      #GIT_PR_REF: ${{github.ref}}
+      #GIT_PR_REFNAME: ${{github.ref_name}}
+      #GIT_PR_REFTYPE: ${{github.ref_type}}
+      #GIT_SHA: ${{github.sha}}
+      GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - uses: actions/checkout@v2
       with:
@@ -52,11 +52,12 @@ jobs:
     - name: check_merge_status
       if: github.repository == 'cedricwong1/github-actions-for-ci'
       run: |
-          git checkout $GITHUB_REF
+          git checkout $GITHUB_BASE_REF
           git pull
           echo "latest commit:" $(git rev-parse HEAD)
           echo $(git tag --sort=creatordate | tail -2 | sort | tail -1 ) " commit:" $(git rev-list -n 1 $(git tag --sort=creatordate | tail -2 | sort | tail -1 ))
           echo "::set-output name=merge_status::$([[ $(git rev-parse HEAD) == $(git rev-list -n 1 $(git tag --sort=creatordate | tail -2 | sort | tail -1)) ]] && echo "false" || echo "true")"
+          echo $GIT_TOKEN
           #echo $(git log)
           #printenv
       id: check_merge_status
