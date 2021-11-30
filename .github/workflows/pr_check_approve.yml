@@ -46,12 +46,13 @@ jobs:
     - name: next_tag
       if: github.repository == 'cedricwong1/github-actions-for-ci'
       run: |
-          echo "::set-output name=next_tag::$( git tag --sort=creatordate | tail -1 | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')"
+          echo "::set-output name=next_tag::$( git tag --sort=creatordate | tail -2 | sort | tail -1 | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')"
       id: next_tag_info   
     - name: check_merge_status
       if: github.repository == 'cedricwong1/github-actions-for-ci'
       run: |
-          echo "::set-output name=merge_status::$([[ $(git rev-parse HEAD) == $(git rev-list -n 1 $(git tag --sort=creatordate | tail -1)) ]] && echo "false" || echo "true")"
+          echo "::set-output name=merge_status::$([[ $(git rev-parse HEAD) == $(git rev-list -n 1 $(git tag --sort=creatordate | tail -2 | sort | tail -1)) ]] && echo "false" || echo "true")"
+          echo $(git pull)
           echo $(git rev-parse HEAD)
           echo $(git rev-list -n 1 $(git tag --sort=creatordate | tail -1))
           echo $(git log)
