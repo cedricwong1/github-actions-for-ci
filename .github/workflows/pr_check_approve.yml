@@ -30,6 +30,14 @@ jobs:
   createTag:
     needs: automerge
     runs-on: ubuntu-latest
+    env:
+      GIT_PR_SHA: ${{github.event.pull_request.head.sha}}
+      GIT_PR_BASE: ${{github.base_ref}}
+      GIT_PR_REF: ${{github.ref}}
+      GIT_PR_REFNAME: ${{github.ref_name}}
+      GIT_PR_REFTYPE: ${{github.ref_type}}
+      GIT_SHA: ${{github.sha}}
+      GIT_TOKEN: ${{github.token}}
     steps:
     - uses: actions/checkout@v2
       with:
@@ -47,6 +55,7 @@ jobs:
           echo $(git rev-parse HEAD)
           echo $(git rev-list -n 1 $(git tag --sort=creatordate | tail -1))
           echo $(git log)
+          printenv
       id: check_merge_status
     - name: push_new_tag
       if: (github.repository == 'cedricwong1/github-actions-for-ci' && steps.check_merge_status.outputs.merge_status=='true' )
