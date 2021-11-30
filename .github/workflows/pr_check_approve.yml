@@ -25,7 +25,7 @@ jobs:
       uses: pascalgn/automerge-action@v0.14.3
       env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          #LOG: "TRACE"  # or "DEBUG"
+          LOG: "TRACE"  # or "DEBUG"
           
   createTag:
     needs: automerge
@@ -43,7 +43,7 @@ jobs:
       with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-    - run: git checkout HEAD^
+    #- run: git checkout HEAD^
     - name: next_tag
       if: github.repository == 'cedricwong1/github-actions-for-ci'
       run: |
