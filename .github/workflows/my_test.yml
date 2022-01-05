@@ -13,4 +13,4 @@ jobs:
        DATA: ${{needs.job1.outputs.mytest}}
      steps:
      - name: test2
-       run: echo $(DATA);echo "$(date)"
+       run: echo "$(DATA)";echo "$(date)"
