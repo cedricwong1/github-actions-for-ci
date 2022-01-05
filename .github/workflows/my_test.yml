@@ -1,0 +1,12 @@
+name: Main Workflow
+on: [workflow_dispatch]
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    - name: test
+      run: echo "::set-output name=mytest1::123"
+   job2:
+     needs: automerge
+     runs-on: ubuntu-latest
+     - name: test2
+       run: echo ${{needs.job1.outputs.mytest}}
