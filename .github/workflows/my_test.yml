@@ -11,4 +11,4 @@ jobs:
      runs-on: ubuntu-latest
      steps:
      - name: test2
-       run: echo ${{needs.job1.outputs.mytest}}
+       run: echo ${{needs.job1.outputs.mytest}};echo "$(date)"
