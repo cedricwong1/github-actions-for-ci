@@ -9,6 +9,8 @@ jobs:
   job2:
      needs: job1
      runs-on: ubuntu-latest
+     env:
+       DATA: ${{needs.job1.outputs.mytest}}
      steps:
      - name: test2
-       run: echo ${{needs.job1.outputs.mytest}};echo "$(date)"
+       run: echo $(DATA);echo "$(date)"
